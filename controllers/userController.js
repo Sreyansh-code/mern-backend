@@ -1,4 +1,3 @@
-import { escape } from "querystring";
 import userModel from "../models/userModel.js";
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
@@ -27,7 +26,7 @@ const login = async (req, res) => {
     const {email, password} = req.body
     const found = await userModel.findOne({email})      //email === email: email
     if(found){
-        const chkPassword = bcrypt.compare(password, found.password)
+        const chkPassword = await bcrypt.compare(password, found.password)
         if(chkPassword){
             const obj = {
                 name: found.name,
@@ -38,7 +37,7 @@ const login = async (req, res) => {
             res.status(200).json({message: "Success", token})
         }
         else{
-            res.status(401).jsonn({message: "Incorrect Password"})
+            res.status(401).json({message: "Incorrect Password"})
         }
     }
     else{
