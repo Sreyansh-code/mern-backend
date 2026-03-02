@@ -7,7 +7,7 @@ const addUser = async (req, res) => {
     const body = req.body
     const hashPasword = await bcrypt.hash(body.password, 10)
     body.password = hashPasword
-    const result = await userModel.create(req.body)
+    const result = await userModel.create(body)
     res.json(result)
 }
 
